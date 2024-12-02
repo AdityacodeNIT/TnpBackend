@@ -1,1 +1,1 @@
-export const DB_NAME = "Geolocation";
+export const DB_NAME = "Spyne";

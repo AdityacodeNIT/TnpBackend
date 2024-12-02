@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
 
 // Load environment variables from .env file
 dotenv.config({
@@ -8,7 +9,7 @@ dotenv.config({
 
 connectDB()
   .then(() => {
-    app.error("error", (error) => {
+    app.on("error", (error) => {
       console.log("err", error);
       throw error;
     });
