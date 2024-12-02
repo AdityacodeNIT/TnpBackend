@@ -21,30 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: "3mb" }));
 // Static files
 app.use(express.static("public")); // Serve static files
 
-// Cookie parsing
-app.use(cookieParser()); // Parse cookies
-
-// Swagger setup
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0", // Correct OpenAPI version
-    info: {
-      title: "Car API", // API title
-      version: "1.0.0", // API version
-      description: "API documentation for the Car application", // API description
-    },
-    servers: [
-      {
-        url: `http://localhost:${process.env.PORT || 8000}/api/v1`, // Server URL
-      },
-    ],
-  },
-  apis: ["./routes/*.js"], // Path to your route files (make sure this is correct)
-};
-
-// Initialize Swagger
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(cookieParser());
 
 // Routes import
 import userrouter from "./routes/user.routes.js";
