@@ -75,3 +75,27 @@ export const getNews = asyncHandler(async (req, res) => {
     res.status(500).json(new ApiResponse(500, "Unable to retrieve news"));
   }
 });
+
+export const getNewsById = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the news item by its ID
+    const newsItem = await News.findById(id);
+
+    // If no news item is found, throw an error
+    if (!newsItem) {
+      throw new ApiError(404, "News article not found");
+    }
+
+    // Return the news item if found
+    res
+      .status(200)
+      .json(
+        new ApiResponse(200, newsItem, "News article retrieved successfully")
+      );
+  } catch (error) {
+    console.error(error); // Log error for debugging
+    throw new ApiError(500, "Unable to retrieve news article");
+  }
+});

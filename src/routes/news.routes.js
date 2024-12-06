@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { addNews, getNews } from "../controllers/news.controller.js";
+import {
+  addNews,
+  getNews,
+  getNewsById,
+} from "../controllers/news.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -18,5 +22,7 @@ newsrouter.post(
 
 // Route to get news
 newsrouter.get("/getNews", getNews);
+
+newsrouter.get("/getNews/:id", getNewsById);
 
 export default newsrouter;
