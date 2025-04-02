@@ -25,12 +25,12 @@ app.use(cookieParser());
 
 // Routes import
 import userrouter from "./routes/user.routes.js";
-import carRouter from "./routes/cars.routes.js";
+
 import newsrouter from "./routes/news.routes.js";
 
 // Routes declaration
 app.use("/api/v1/users", userrouter);
-app.use("/api/v1/cars", carRouter);
+
 app.use("/news", newsrouter);
 
 export { app };
