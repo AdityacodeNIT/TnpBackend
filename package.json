@@ -1,5 +1,4 @@
 {
-  
   "name": "grolocation-project",
   "version": "1.0.0",
   "description": "A backend for Geolocation Based Project",
@@ -23,7 +22,7 @@
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "geolib": "^3.3.4",
     "jsonwebtoken": "^9.0.2",

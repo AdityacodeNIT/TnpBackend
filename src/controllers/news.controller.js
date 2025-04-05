@@ -8,7 +8,8 @@ export const addNews = async (req, res) => {
   try {
     const { title, content, author, category, tags, paragraphContent } =
       req.body;
-
+      console.log("Body:", req.body);
+      console.log("Files:", req.files); // Log the request body for debugging
     if (!title || !content || !author) {
       throw new ApiError(400, "Title, content, and author are required");
     }
@@ -98,4 +99,19 @@ export const getNewsById = asyncHandler(async (req, res) => {
     console.error(error); // Log error for debugging
     throw new ApiError(500, "Unable to retrieve news article");
   }
+});
+
+export const deleteNewsById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const newsItem = await News.findById(id);
+  if (!newsItem) {
+    throw new ApiError(404, "News article not found");
+  }
+
+  await newsItem.deleteOne();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "News article deleted successfully"));
 });

@@ -28,9 +28,18 @@ import userrouter from "./routes/user.routes.js";
 
 import newsrouter from "./routes/news.routes.js";
 
+import eventrouter from "./routes/event.routes.js";
+
+
+import sliderrouter from "./routes/slider.routes.js";
+
 // Routes declaration
 app.use("/api/v1/users", userrouter);
 
-app.use("/news", newsrouter);
+app.use("/api/news", newsrouter);
+
+app.use("/api/events", eventrouter);
+
+app.use("/api/slider", sliderrouter);
 
 export { app };

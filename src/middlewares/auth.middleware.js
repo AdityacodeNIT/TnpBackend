@@ -4,29 +4,24 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.models.js";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
-  try {
-    const token =
-      req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", "").trim();
+  const token =
+    req.cookies?.accessToken ||
+    req.header("Authorization")?.replace("Bearer ", "").trim();
 
-    if (!token) {
-      throw new ApiError(401, "Token is not present");
-    }
+  if (!token) throw new ApiError(401, "Access Token not provided");
 
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    const user = await User.findById(decodedToken._id).select(
-      "-password -refreshToken"
-    );
+  const user = await User.findById(decoded._id).select("-password -refreshToken");
+  if (!user) throw new ApiError(401, "Invalid Token: User not found");
 
-    if (!user) {
-      throw new ApiError(401, "Invalid Access Token");
-    }
+  req.user = user;
+  next();
+});
 
-    req.user = user; // Attach user to req
-    next();
-  } catch (error) {
-    console.error("JWT verification error:", error.message);
-    throw new ApiError(401, "Invalid Access Token");
+export const isAdmin = asyncHandler(async (req, res, next) => {
+  if (!req.user || req.user.role !== "ADMIN") {
+    throw new ApiError(403, "Access Denied: Admins only");
   }
+  next();
 });

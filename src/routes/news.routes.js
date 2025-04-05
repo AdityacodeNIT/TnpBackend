@@ -1,28 +1,28 @@
 import { Router } from "express";
+import { verifyJWT, isAdmin } from "../middlewares/auth.middleware.js";
 import {
   addNews,
   getNews,
-  getNewsById,
+  deleteNewsById,
 } from "../controllers/news.controller.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+const router = Router();
 
-const newsrouter = Router();
+router.get("/get-news", getNews);
 
-// Route to add news
-newsrouter.post(
-  "/addNews",
+// 🔒 Admin can create news
+router.post(
+  "/add-news",
+  verifyJWT,
+  isAdmin,
   upload.fields([
     { name: "images", maxCount: 10 },
     { name: "paragraphImages", maxCount: 10 },
   ]),
-  verifyJWT,
   addNews
 );
 
-// Route to get news
-newsrouter.get("/getNews", getNews);
+// 🔒 Admin can delete news
+router.delete("/delete-news/:id", verifyJWT, isAdmin, deleteNewsById);
 
-newsrouter.get("/getNews/:id", getNewsById);
-
-export default newsrouter;
+export default router;
