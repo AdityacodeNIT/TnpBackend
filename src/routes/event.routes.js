@@ -13,7 +13,7 @@ import { verifyJWT , isAdmin } from "../middlewares/auth.middleware.js";
 const eventRouter = express.Router();
 
 // POST /api/events - Create a new event
-eventRouter.post("/create",verifyJWT,isAdmin, upload.single("photo"), createEvent);
+eventRouter.post("/create", upload.single("photo"), createEvent);
 
 // GET /api/events - Get all events
 eventRouter.get("/get-events", getAllEvents);
