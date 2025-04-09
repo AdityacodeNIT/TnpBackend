@@ -3,25 +3,40 @@ import {
   createEvent,
   getAllEvents,
   getEventById,
+  updateEvent,
   deleteEvent,
 } from "../controllers/event.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
 
+import { upload } from "../middlewares/multer.middleware.js"; // Make sure Multer is set up for multi-file uploads
+import { isAdmin, verifyJWT } from "../middlewares/auth.middleware.js"; // Optional: for admin/auth access
 
-import { verifyJWT , isAdmin } from "../middlewares/auth.middleware.js";
+const router = express.Router();
 
-const eventRouter = express.Router();
+//  Create Event — requires multiple images
+router.post(
+  "/create",
+  verifyJWT, // Optional: protect route
+  isAdmin,
+  upload.array("images", 10), // Allow up to 10 images
+  createEvent
+);
 
-// POST /api/events - Create a new event
-eventRouter.post("/create",verifyJWT,isAdmin, upload.single("photo"), createEvent);
+//  Get All Events
+router.get("/get", getAllEvents);
 
-// GET /api/events - Get all events
-eventRouter.get("/get-events", getAllEvents);
+//  Get Event by ID
+router.get("/get-ById/:id", getEventById);
 
-// GET /api/events/:id - Get a specific event by ID
-eventRouter.get("/get-eventByID/:id", getEventById);
+//  Update Event — add/remove images
+router.put(
+  "/update/:id",
+  verifyJWT, // Optional: protect route
+  isAdmin,
+  upload.array("images", 10),
+  updateEvent
+);
 
-// DELETE /api/events/:id - Delete a specific event
-eventRouter.delete("/delete-event/:id", deleteEvent);
+// Delete Event
+router.delete("/delete/:id", verifyJWT,isAdmin, deleteEvent);
 
-export default eventRouter;
+export default router;

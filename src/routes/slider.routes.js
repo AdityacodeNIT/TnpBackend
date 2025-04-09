@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-// 🔒 Admin-only route to upload multiple slider images
+//  Admin-only route to upload multiple slider images
 router.post(
   "/upload",
   verifyJWT,
@@ -19,10 +19,10 @@ router.post(
   uploadSliderImages
 );
 
-// 🟢 Public or user-authenticated route (optional)
+//  Public or user-authenticated route (optional)
 router.get("/get-images",getSliderImages);
 
-// 🔒 Admin-only delete route
+//  Admin-only delete route
 router.delete("/delete-images/:id", verifyJWT, isAdmin, deleteSliderImage);
 
 

@@ -2,8 +2,8 @@ import mongoose, { Schema } from "mongoose";
 
 const eventSchema = new Schema(
   {
-    photo: {
-      type: String,
+    photos: {
+      type: [String],
       required: true, // URL or local path to the image
       trim: true,
     },
