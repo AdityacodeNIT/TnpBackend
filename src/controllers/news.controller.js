@@ -42,7 +42,6 @@ export const addNews = async (req, res) => {
       }
     }
 
-    // Create a new news article
     const news = await News.create({
       title,
       content,

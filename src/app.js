@@ -33,7 +33,13 @@ import eventrouter from "./routes/event.routes.js";
 
 import sliderrouter from "./routes/slider.routes.js";
 
-// Routes declaration
+// Routes declaratio
+app.get('/active', (req, res) => {
+  res.status(200).send('Server is active');
+});
+
+
+
 app.use("/api/v1/users", userrouter);
 
 app.use("/api/news", newsrouter);
