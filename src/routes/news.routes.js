@@ -4,6 +4,7 @@ import {
   addNews,
   getNews,
   deleteNewsById,
+  getNewsById
 } from "../controllers/news.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
@@ -24,5 +25,7 @@ router.post(
 
 // 🔒 Admin can delete news
 router.delete("/delete-news/:id", verifyJWT, isAdmin, deleteNewsById);
+
+router.get("/getNews/:id",getNewsById);
 
 export default router;
