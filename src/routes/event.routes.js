@@ -16,7 +16,6 @@ const router = express.Router();
 router.post(
   "/create",
   verifyJWT,
-
   upload.array("images", 10), // Allow up to 10 images
   createEvent
 );

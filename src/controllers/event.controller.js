@@ -10,6 +10,7 @@ import { ApiError } from "../utils/ApiError.js";
 //  Create Event with multiple images
 export const createEvent = asyncHandler(async (req, res) => {
   const { title, date, paragraph } = req.body;
+  console.log(req.body)
 
   if (!title || !date || !paragraph) {
     throw new ApiError(400, "All fields  are required.");
