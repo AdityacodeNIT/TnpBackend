@@ -6,27 +6,31 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 export const addNews = async (req, res) => {
   try {
-    const { title, content, author, category, tags, paragraphContent } =req.body;
+    const { title, content, author, category, tags, paragraphContent } = req.body;
 
-    console.log(req.body)
+    console.log("Request Body:", req.body);
 
-    
+    // Validate required fields
     if (!title || !content || !author) {
-      throw new ApiError(400, "Title, content, and author are required");
+      console.error("Missing required fields: title, content, or author");
+      return res.status(400).json({ message: "Title, content, and author are required" });
     }
 
     // Upload independent images to Cloudinary
     const uploadedImages = [];
     if (req.files && req.files.images) {
       for (let i = 0; i < req.files.images.length; i++) {
-        const file = req.files.images[i].path;
-        console.log(file); // Access file.path directly
-        const uploadedImage = await uploadOnCloudinary(file);
-
-        if (!uploadedImage) {
-          throw new ApiError(500, "Error uploading image");
+        const file = req.files.images[i];
+        try {
+          const uploadedImage = await uploadOnCloudinary(file.path);
+          if (!uploadedImage) {
+            throw new Error(`Error uploading image: ${file.originalname}`);
+          }
+          uploadedImages.push(uploadedImage.secure_url); // Save Cloudinary image URL
+        } catch (error) {
+          console.error(`Error uploading image ${file.originalname}:`, error);
+          return res.status(500).json({ message: `Error uploading image: ${file.originalname}`, details: error.message });
         }
-        uploadedImages.push(uploadedImage.secure_url); // Save Cloudinary image URL
       }
     }
 
@@ -34,13 +38,17 @@ export const addNews = async (req, res) => {
     const paragraphsImages = [];
     if (req.files && req.files.paragraphImages) {
       for (let i = 0; i < req.files.paragraphImages.length; i++) {
-        const file = req.files.paragraphImages[i].path; // Access file.path directly
-        const uploadedImage = await uploadOnCloudinary(file);
-
-        if (!uploadedImage) {
-          throw new ApiError(500, "Error uploading paragraph image");
+        const file = req.files.paragraphImages[i];
+        try {
+          const uploadedImage = await uploadOnCloudinary(file.path);
+          if (!uploadedImage) {
+            throw new Error(`Error uploading paragraph image: ${file.originalname}`);
+          }
+          paragraphsImages.push(uploadedImage.secure_url); // Save Cloudinary image URL
+        } catch (error) {
+          console.error(`Error uploading paragraph image ${file.originalname}:`, error);
+          return res.status(500).json({ message: `Error uploading paragraph image: ${file.originalname}`, details: error.message });
         }
-        paragraphsImages.push(uploadedImage.secure_url); // Save Cloudinary image URL
       }
     }
 
@@ -50,21 +58,21 @@ export const addNews = async (req, res) => {
       author,
       category,
       tags: Array.isArray(tags) ? tags : [], // Split tags if provided as a comma-separated string
-      images: uploadedImages,
-      paragraphContent: Array.isArray(paragraphContent) ? paragraphContent : [], // Split paragraph content if provided as a comma-separated string
+      images: uploadedImages,  // Corrected: Use the uploaded images array directly
+      paragraphContent: Array.isArray(paragraphContent) ? paragraphContent : [], // Corrected: Split paragraph content if provided
       paragraphImages: paragraphsImages,
       owner: req.user._id, // Associate the article with the logged-in user
     });
 
     // Send a success response
-    res
-      .status(201)
-      .json(new ApiResponse(201, "News article added successfully", news));
+    console.log("News article added successfully:", news);
+    res.status(201).json(new ApiResponse(201, "News article added successfully", news));
   } catch (error) {
-    console.error(error); // Log error for debugging
-    throw new ApiError(500, "Unable to add news article");
+    console.error("Error in addNews method:", error); // Log error for debugging
+    return res.status(500).json({ message: "Unable to add news article", details: error.message });
   }
 };
+
 
 export const getNews = asyncHandler(async (req, res) => {
   try {
