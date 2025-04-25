@@ -1,55 +1,46 @@
 import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
-import dotenv from "dotenv";
-dotenv.config();
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+        cloud_name: "adityaop",
+        api_key: "799151416882437",
+        api_secret: "MI3tTgB4LHwUMwsffXKP6wn3jvo",
 });
-
-// Upload Image
 const uploadOnCloudinary = async (localFilePath) => {
-  try {
-    if (!localFilePath) return null;
+        try {
+                if (!localFilePath) {
+                        return null;
+                }
 
-    const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto",
-    });
+                const response = await cloudinary.uploader.upload(
+                        localFilePath,
+                        {
+                                resource_type: "auto",
+                        },
+                );
+                // console("cloudinary response  : ", response)
+                fs.unlinkSync(localFilePath);
+                return response;
 
-    fs.unlinkSync(localFilePath); // Remove local file
-    return response;
-  } catch (error) {
-    if (fs.existsSync(localFilePath)) fs.unlinkSync(localFilePath);
-    return null;
-  }
+                // file has been succesfully uploaded on cloudnary
+        } catch (error) {
+                fs.unlinkSync(localFilePath);
+                return null;
+                // remove the unploaded locally saved temporary file as the upload operation got failed
+        }
 };
 
-//  Delete Image from Cloudinary using URL
-const deleteFromCloudinary = async (imageUrl) => {
-  try {
-    const publicId = extractPublicId(imageUrl);
-    if (!publicId) return null;
-
-    const response = await cloudinary.uploader.destroy(publicId);
-    return response;
-  } catch (error) {
-    console.error("Cloudinary delete error:", error.message);
-  }
-};
-
-//  Extract public_id from full image URL
-const extractPublicId = (url) => {
-  try {
-    const parts = url.split("/");
-    const file = parts.pop(); // image.jpg
-    const folder = parts.pop(); // e.g. event folder name
-    const publicId = `${folder}/${file.split(".")[0]}`; // folder/image
-    return publicId;
-  } catch {
-    return null;
-  }
+const deleteFromCloudinary = async (localFilePath) => {
+        try {
+                if (!localFilePath) {
+                        return null;
+                }
+                const deleate =
+                        await cloudinary.uploader.destroy(localFilePath);
+                return deleate;
+        } catch (error) {
+                return null;
+        }
 };
 
 export { uploadOnCloudinary, deleteFromCloudinary };

@@ -15,7 +15,7 @@ router.get("/get-news", getNews);
 router.post(
   "/add-news",
   verifyJWT,
-  isAdmin,
+ 
   upload.fields([
     { name: "images", maxCount: 10 },
     { name: "paragraphImages", maxCount: 10 },

@@ -6,10 +6,11 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 export const addNews = async (req, res) => {
   try {
-    const { title, content, author, category, tags, paragraphContent } =
-      req.body;
-      console.log("Body:", req.body);
-      console.log("Files:", req.files); // Log the request body for debugging
+    const { title, content, author, category, tags, paragraphContent } =req.body;
+
+    console.log(req.body)
+
+    
     if (!title || !content || !author) {
       throw new ApiError(400, "Title, content, and author are required");
     }
@@ -18,7 +19,8 @@ export const addNews = async (req, res) => {
     const uploadedImages = [];
     if (req.files && req.files.images) {
       for (let i = 0; i < req.files.images.length; i++) {
-        const file = req.files.images[i].path; // Access file.path directly
+        const file = req.files.images[i].path;
+        console.log(file); // Access file.path directly
         const uploadedImage = await uploadOnCloudinary(file);
 
         if (!uploadedImage) {
