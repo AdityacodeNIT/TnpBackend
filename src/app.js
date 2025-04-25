@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
-// CORS setup
+
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
