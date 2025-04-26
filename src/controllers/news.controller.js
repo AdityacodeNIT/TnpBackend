@@ -11,6 +11,7 @@ export const addNews = async (req, res) => {
     console.log("Request Body:", req.body);
 
     // Validate required fields
+    //
     if (!title || !content || !author) {
       console.error("Missing required fields: title, content, or author");
       return res.status(400).json({ message: "Title, content, and author are required" });
