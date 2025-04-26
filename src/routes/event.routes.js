@@ -15,8 +15,7 @@ const router = express.Router();
 //  Create Event — requires multiple images
 router.post(
   "/create",
-  verifyJWT, // Optional: protect route
-  isAdmin,
+  verifyJWT,
   upload.array("images", 10), // Allow up to 10 images
   createEvent
 );

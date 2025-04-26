@@ -23,10 +23,6 @@ const userSchema = new Schema(
       required: [true, "Full name is required"],
       trim: true,
     },
-    avatar: {
-      type: String,
-      required: [true, "Avatar is required"], // Cloudinary URL
-    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -71,7 +67,6 @@ userSchema.methods.generateAccessToken = function () {
       _id: this._id,
       email: this.email,
       username: this.username,
-      role: this.role,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
