@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { verifyJWT, isAdmin } from "../middlewares/auth.middleware.js";
+
+import { upload } from "../middlewares/multer.middleware.js"; 
 import {
   addNews,
   getNews,
