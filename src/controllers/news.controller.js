@@ -1,6 +1,6 @@
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { News } from "../models/news.model.js";
+import { News } from "../models/news.models.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 // Admin: Add a news item
