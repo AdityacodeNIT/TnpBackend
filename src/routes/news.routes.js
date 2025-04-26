@@ -6,12 +6,13 @@ import {
   deleteNewsById,
   getNewsById
 } from "../controllers/news.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
+
 const router = Router();
 
+// Public: Get all news
 router.get("/get-news", getNews);
 
-// 🔒 Admin can create news
+
 router.post(
   "/add-news",
   verifyJWT,
@@ -23,7 +24,8 @@ router.post(
   addNews
 );
 
-// 🔒 Admin can delete news
+
+// Admin: Delete news
 router.delete("/delete-news/:id", verifyJWT, isAdmin, deleteNewsById);
 
 router.get("/getNews/:id",getNewsById);
