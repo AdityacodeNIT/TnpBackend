@@ -37,7 +37,7 @@ export const createEvent = asyncHandler(async (req, res) => {
     paragraph,
     photos: imageUrls,
   });
-
+  
   res
     .status(201)
     .json(new ApiResponse(201, event, "Event created successfully"));
