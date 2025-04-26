@@ -6,41 +6,18 @@ const newsSchema = new Schema(
       type: String,
       required: true,
     },
-    content: {
+    link: {
       type: String,
-      required: true,
+      required: true, // URL that news points to
     },
-
-    author: {
+    category: {
       type: String,
-      required: true,
+      enum: ["News & Events", "Notice Board"],
+      default: "News & Events",
     },
-    category: { type: String },
-
-    paragraphContent: [{ type: String, required: true }],
-
-    paragraphImages: [
-      {
-        type: String,
-      },
-    ],
-
-    images: [
-      {
-        type: String,
-        required: true, // URL of the uploaded image
-      },
-    ],
-
-    tags: [
-      {
-        type: String,
-      },
-    ],
-
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "User", // Reference to the user who owns the car
+      ref: "User",
       required: true,
     },
   },
